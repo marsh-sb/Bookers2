@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
+  
   <head>
-    <title>Bookers2</title>
+    <title>Bookers</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
@@ -10,6 +11,92 @@
   </head>
 
   <body>
-    <%= yield %>
+    
+    <header>
+      <div class="container">
+        <nav>
+          <h4>Bookers</h4>
+        </nav>
+        <nav>
+          <ul>
+            <% if user_signed_in? %>
+              <li>
+                <%= link_to user_path(current_user.id) do %>
+                 
+                  Home
+                <% end %>
+              </li>
+              <li>
+                <%= link_to users_path do %>
+                  
+                  Users
+                <% end %>
+              </li>
+              <li>
+                <%= link_to books_path do %>
+                 
+                  Books
+                <% end %>
+              </li>
+              <li>
+                <%= link_to destroy_user_session_path, method: :delete do %>
+               
+                logout
+                <% end %>
+              </li>
+            <% else %>
+              <li>
+                <%= link_to root_path do %>
+                 
+                  Home
+                <% end %>
+              </li>
+              <li>
+                <%= link_to home_about_path do %>
+                  
+                  About
+                <% end %>
+              </li>
+              <li>
+                <%= link_to "/users/sign_up" do %>
+                  
+                  sign up
+                <% end %>
+              </li>
+              <li>
+                <%= link_to "/users/sign_in" do %>
+                 
+                  login
+                <% end %>
+              </li>
+            <% end %>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    
+    <div class="main container">
+      <div class="row">
+        <% if flash[:notice] %>
+          <div>
+            <%= flash[:notice] %>
+          </div>
+        <% end %>
+        <%= yield %>
+      </div>
+    </div>
+    
+    <footer>
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-3 col-xs-offset-9">
+            <p>CopyRight Infratop.inc</p>
+          </div>
+        </div>
+      </div>
+      
+    </footer>
+    
   </body>
 </html>
