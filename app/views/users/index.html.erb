@@ -1,18 +1,23 @@
-<%= render partial: 'users/sidebar', locals: {user:@user, new_book:@new_book} %>
+<div class="container px-5 px-sm-0">
+  <div class="row">
+  	
+		<%= render partial: 'users/sidebar', locals: {user:@user, new_book:@new_book} %>
 
-
-	<h2>Users</h2>
+		
+		<div class="col-md-8 offset-md-1">
+		
+		<h2>Users</h2>
 	
-	<table>
-		<thead>
+		<table class="table">
+			<thead>
 			
 			<tr>
 				<th>image</th>
 				<th>name</th>
-				<th>&nbsp;</th>
+				<th></th>
 			</tr>
 			
-		</thead>
+			</thead>
 		
 		<tbody>
 			<% @users.each do |user| %>
@@ -26,4 +31,7 @@
 			<% end %>
 		</tbody>
 		
-	</table>
+		</table>
+		</div>
+	</div>
+</div>
