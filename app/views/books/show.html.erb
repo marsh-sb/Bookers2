@@ -1,0 +1,29 @@
+<div class="container px-5 px-sm-0">
+	<div class="row">
+
+	<%= render partial: 'users/sidebar', locals: {user:@user, new_book:@new_book} %>
+
+	<div class="col-md-8 offset-md-1">
+		<h2>Book detail</h2>
+
+		<table class="table">
+		
+			<td>
+				<%= link_to user_path(@user.id) do %>
+				<%= attachment_image_tag @user, :profile_image, format: 'jpeg', size: "40x40", fallback: "no_image.jpg" %>
+				<%= link_to @user.name, user_path(@user.id) %>
+				<% end %>
+			</td>
+		
+			<td><%= @book.title %></td>
+			<td><%= @book.body %></td>
+
+			<% if @book.user == current_user %>
+			<td><%= link_to "Edit", edit_book_path(@book.id), class: "btn btn-sm btn-success"%></td>
+			<td><%= link_to "Destroy", book_path(@book.id), class: "btn btn-sm btn-danger", method: :delete, "data-confirm" => "本当に消しますか？" %></td>
+			<% end %>
+		
+		</table>
+		</div>
+	</div>
+</div>
