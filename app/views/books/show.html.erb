@@ -1,7 +1,7 @@
 <div class="container px-5 px-sm-0">
 	<div class="row">
 
-	<%= render partial: 'users/sidebar', locals: {user:@user, new_book:@new_book} %>
+	<%= render partial: 'layouts/sidebar', locals: {user:@user, new_book:@new_book} %>
 
 	<div class="col-md-8 offset-md-1">
 		<h2>Book detail</h2>
@@ -22,9 +22,8 @@
 			<td><%= link_to "Edit", edit_book_path(@book.id), class: "btn btn-sm btn-success"%></td>
 			<td><%= link_to "Destroy", book_path(@book.id), class: "btn btn-sm btn-danger", method: :delete, "data-confirm" => "本当に消しますか？" %></td>
 			<% end %>
-		
-		</table>
-		<td>
+			
+			<td>
 		<% if @book.favorited_by?(current_user) %>
 			<p>
 				<%= link_to book_favorite_path(@book), method: :delete do %>
@@ -39,6 +38,9 @@
 			</p>
 		<% end %>
 		</td>
+		
+		</table>
+		
 		<div class="comments">
 			<p>コメント件数:<%= @book.book_comments.count %></p>
 			<% @book.book_comments.each do |book_comment| %>
