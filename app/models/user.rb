@@ -5,36 +5,40 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
 
-  has_many :books, dependent: :destroy
+  has_many :books
   has_many :book_comments, dependent: :destroy
   has_many :favorites, dependent: :destroy
+  attachment :profile_image, destroy: false
+  
+  validates :name, presence: true, length: {minimum: 2, maximum: 20}
+  validates :name, uniqueness: true
+  validates :introduction, length: {maximum: 50}
   
   has_many :follower, class_name: "Relationship", foreign_key: "follower_id", dependent: :destroy # フォロー取得
   has_many :followed, class_name: "Relationship", foreign_key: "followed_id", dependent: :destroy # フォロワー取得
   has_many :following_user, through: :follower, source: :followed # 自分がフォローしている人
   has_many :follower_user, through: :followed, source: :follower # 自分をフォローしている人
   
-  # ユーザーをフォローする
+  
+  # 自分がフォローされる（被フォロー）側の関係性
+  has_many :reverse_of_relationships, class_name: "Relationship", foreign_key: "followed_id", dependent: :destroy
+  # 自分がフォローする（与フォロー）側の関係性
+  has_many :relationships, class_name: "Relationship", foreign_key: "follower_id", dependent: :destroy
+  # 被フォロー関係を通じて参照→自分をフォローしている人
+  has_many :followers, through: :reverse_of_relationships, source: :follower
+  # 与フォロー関係を通じて参照→自分がフォローしている人
+  has_many :followings, through: :relationships, source: :followed
+
   def follow(user_id)
-    follower.create(followed_id: user_id)
+    relationships.create(followed_id: user_id)
   end
 
-  # ユーザーのフォローを外す
   def unfollow(user_id)
-    follower.find_by(followed_id: user_id).destroy
+    relationships.find_by(followed_id: user_id).destroy
   end
 
-  # フォローしていればtrueを返す
   def following?(user)
-    following_user.include?(user)
+    followings.include?(user)
   end
-  
-  attachment :profile_image
-  
-  validates :name, presence: true, length: {minimum: 2, maximum: 20}
-  validates :name, uniqueness: true
-  validates :introduction, length: {maximum: 50}
-  
-
 
 end
